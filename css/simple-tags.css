@@ -10,6 +10,13 @@
     cursor: default;
 }
 
+.simple-tag a {
+    text-decoration: none;
+    font-size: 12px;
+    vertical-align: text-top;
+    color: #848484;
+}
+
 .tag-select { 
     background-color: #1FBEC7;
 }

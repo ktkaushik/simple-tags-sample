@@ -15,10 +15,16 @@
         this.$input = $input;
         this.opts = opts;
 
+        var _this = this;
+
         // bind events
         this.$input.keydown(function (event) {
-            this.keyDown(event);
-        }.bind(this));
+            _this.keyDown(event);
+        });
+
+        $(document).on('click', '.remove-simple-tag', function (event) {
+            _this.removeTagClick($('.remove-simple-tag').index(this));
+        });
     }
 
     Tag.prototype.keyDown = function (event) {
@@ -42,7 +48,6 @@
 
         // backspace
         if (event.which === 8) {
-            console.log('you pressed backspace');
             // for the first backspace - choose the last element to be removed. we can target it by hightlighting the tag
             // then on the second press delete it.
 
@@ -58,16 +63,40 @@
             // 4. Remove the element
 
             if ($(event.target).val() === '') {
-                var $tagToBeDeleted = $(event.target).siblings('.simple-tag:last');
-                $tagToBeDeleted.hasClass('tag-select') ? $tagToBeDeleted.remove() : $tagToBeDeleted.addClass('tag-select');
+                var $tagToBeDeleted = $(event.target).siblings('.simple-tag:last')
+                  , text = $tagToBeDeleted.text();
+                if ($tagToBeDeleted.hasClass('tag-select')) {
+                    $tagToBeDeleted.remove() 
+                    this.removeTagValue();
+                } else {
+                    $tagToBeDeleted.addClass('tag-select')
+                };
             }
         }
+    };
+
+    Tag.prototype.removeTagClick = function(index) {
+        var text = $(event.target).parents('.simple-tag').text();
+        $(event.target).parents('.simple-tag').remove();
+        this.removeTagValue(index);
+    };
+
+    // remove the tag value from the input type value
+    Tag.prototype.removeTagValue = function (index) {
+        var val = this.$el.val().split(',');
+
+        if (!index) index = val.length - 1;
+
+        var lhs = val.slice(0, index)
+          , rhs = val.slice(index + 1, val.length);
+
+        this.$el.val(lhs.concat(rhs));
     };
 
     Tag.prototype.createTag = function (event) {
 
         var $element = $(event.target)
-          , el = "<span class='simple-tag'>" + $element.val() + "</span>";
+          , el = "<span class='simple-tag'>" + $element.val() + "<span><a class='remove-simple-tag' href='#'>x</a></span></span>";
 
         $(el).insertBefore(this.$input);
         this.$input.val('');
