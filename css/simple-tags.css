@@ -11,10 +11,11 @@
 }
 
 .simple-tag a {
-    text-decoration: none;
-    font-size: 12px;
-    vertical-align: text-top;
+    padding: 0 3px;
     color: #848484;
+    font-size: 12px;
+    text-decoration: none;
+    vertical-align: text-top;
 }
 
 .tag-select { 
