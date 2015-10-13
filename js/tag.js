@@ -24,7 +24,7 @@
     Tag.prototype.keyDown = function (event) {
 
         // if the key pressed is Enter or Tab
-        if (event.which == 13 || event.which == 9) {
+        if (event.which === 13 || event.which === 9) {
             event.preventDefault();
             if ($(event.target).val() !== '') {
                 if (this.$el.val().length > 0) {
@@ -37,6 +37,29 @@
                     this.$el.val($(event.target).val());
                 }
                 this.createTag(event);
+            }
+        }
+
+        // backspace
+        if (event.which === 8) {
+            console.log('you pressed backspace');
+            // for the first backspace - choose the last element to be removed. we can target it by hightlighting the tag
+            // then on the second press delete it.
+
+            // this task can be divided among a dew steps - 
+            // 1. The user will use backspace not just to delete the element but to also edit teh content from teh current tag input box.
+            //    so, this would mean we will have to check if the value of the current text box is empty. If so, move to the next step or END
+            // 
+            // mission - HIGHLIGHT / SELECT THE LAST TAG
+            // 2. Use a simple jQuery selector which would basically pick the last element in the DOM with class ame as 'simple-tag'.
+            //    But, in a case where there are multiple tags used in the page. We will need to be able to target using a particular SCOPE.
+            //    Use the this.$input's siblings with simple-tag to find the element. Simple as that. 
+            // 3. Check if class name 'tag-select' is present on the last tag which has been selected, if it is then go to step 4. If not, then add the class.
+            // 4. Remove the element
+
+            if ($(event.target).val() === '') {
+                var $tagToBeDeleted = $(event.target).siblings('.simple-tag:last');
+                $tagToBeDeleted.hasClass('tag-select') ? $tagToBeDeleted.remove() : $tagToBeDeleted.addClass('tag-select');
             }
         }
     };

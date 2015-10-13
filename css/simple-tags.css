@@ -10,6 +10,10 @@
     cursor: default;
 }
 
+.tag-select { 
+    background-color: #1FBEC7;
+}
+
 input.simple-tag-input {
     margin-left: 5px;
 	border: none;
